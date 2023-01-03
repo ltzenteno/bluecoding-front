@@ -1,16 +1,33 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { toggleModal } from '../slices/customSlice';
+import { setSelectedGif, toggleModal } from '../slices/customSlice';
 
 const SlideModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const isOpen = useAppSelector((state) => state.custom.isModalOpen);
+  const selectedItemId = useAppSelector((state) => state.custom.selectedGif);
+  const items = useAppSelector((state) => state.custom.gifList);
+
+  const selectedIndex = items.findIndex((it) => it.id === selectedItemId);
 
   const classes = classNames(
-    'modal fade fixed top-0 left-0 w-full h-full outline-none overflow-x-hidden overflow-y-auto text-black',
+    'modal fade fixed top-[5%] left-[5%] w-3/4 outline-none overflow-x-hidden overflow-y-auto text-black',
     isOpen ? '' : 'hidden'
   );
+
+  const moveSlide = (idx: number) => {
+    if (items[idx]) {
+      dispatch(setSelectedGif(items[idx].id));
+    } else {
+      // fuera de limites
+      if (idx < selectedIndex) {
+        dispatch(setSelectedGif(items[items.length - 1].id));
+      } else {
+        dispatch(setSelectedGif(items[0].id));
+      }
+    }
+  };
 
   return (
     <div
@@ -33,10 +50,29 @@ const SlideModal: React.FC = () => {
             </button>
           </div>
           <div className="modal-body relative p-4">
-            Modal body text goes here.
+            {items.length > 0 && items[selectedIndex] && (
+              <div className="text-center">
+                <p>{items[selectedIndex].id || ''}</p>
+                <img
+                  alt={items[selectedIndex]?.id || 'placeholder'}
+                  src={items[selectedIndex]?.images.downsized.url || ''}
+                />
+              </div>
+            )}
           </div>
-          <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
-            footer
+          <div className="flex flex-shrink-0 flex-wrap items-center justify-between p-4 border-t border-gray-200 rounded-b-md">
+            <button
+              onClick={() => moveSlide(selectedIndex - 1)}
+              className="button bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => moveSlide(selectedIndex + 1)}
+              className="button bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

@@ -1,12 +1,10 @@
 import React from 'react';
-import { GifResponse } from '../api';
 import ListItem from './ListItem';
+import { useAppSelector } from '../store/hooks';
 
-export type ListPropType = {
-  items: GifResponse[];
-};
+const List: React.FC = () => {
+  const items = useAppSelector((state) => state.custom.gifList);
 
-const List: React.FC<ListPropType> = ({ items }) => {
   return (
     <div>
       <ul className="w-1/2">

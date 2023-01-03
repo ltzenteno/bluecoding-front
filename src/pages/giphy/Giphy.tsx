@@ -7,27 +7,20 @@ import {
   GifResponse,
 } from '../../api';
 import SlideModal from '../../components/SlideModal';
+import { setItems } from '../../slices/customSlice';
+import { useAppDispatch } from '../../store/hooks';
 
 const GiphyList: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [term, setTerm] = useState<string>('');
-  const [gifList, setGifList] = useState<GifResponse[]>([]);
-
-  /*
-  useEffect(() => {
-    const request: SearchRequestType = {
-      searchTerm: term,
-    };
-
-    searchGifs(request).then(setGifList);
-  }, [term]);
-  */
-
   const search = () => {
     const request: SearchRequestType = {
       searchTerm: term,
     };
 
-    searchGifs(request).then(setGifList);
+    searchGifs(request).then((response) => {
+      dispatch(setItems(response));
+    });
   };
 
   return (
@@ -52,7 +45,7 @@ const GiphyList: React.FC = () => {
         </button>
       </div>
       <div>
-        <List items={gifList} />
+        <List />
       </div>
       <SlideModal />
     </div>
