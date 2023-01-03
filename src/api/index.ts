@@ -36,7 +36,7 @@ export const searchGifs = async ({
     offset,
   };
 
-  const response = await axios.get(`${API_URL}/${qs.stringify(params)}`);
+  const response = await axios.get(`${API_URL}?${qs.stringify(params)}`);
 
-  return response.data as GifResponse[];
+  return response.data.data as GifResponse[];
 };
