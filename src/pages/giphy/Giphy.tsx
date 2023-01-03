@@ -6,6 +6,7 @@ import {
   GiphyImage,
   GifResponse,
 } from '../../api';
+import SlideModal from '../../components/SlideModal';
 
 const GiphyList: React.FC = () => {
   const [term, setTerm] = useState<string>('');
@@ -53,6 +54,7 @@ const GiphyList: React.FC = () => {
       <div>
         <List items={gifList} />
       </div>
+      <SlideModal />
     </div>
   );
 };

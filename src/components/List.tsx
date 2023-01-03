@@ -9,7 +9,7 @@ export type ListPropType = {
 const List: React.FC<ListPropType> = ({ items }) => {
   return (
     <div>
-      <ul>
+      <ul className="w-1/2">
         {items.map((it) => (
           <ListItem key={it.id} item={it} />
         ))}
