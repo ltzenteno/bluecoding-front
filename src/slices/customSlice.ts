@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { GifResponse } from '../api';
 
 type CustomStateType = {
   count: number;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error?: string;
+  isModalOpen: boolean;
+  selectedGif?: GifResponse['id'];
+  gifList: GifResponse[];
 };
 
 const initialState: CustomStateType = {
   count: 0,
-  status: 'idle',
+  isModalOpen: false,
+  gifList: [],
 };
 
 const customSlice = createSlice({
@@ -19,9 +22,22 @@ const customSlice = createSlice({
     increaseCount: (state, _payload: PayloadAction<void>) => {
       state.count++;
     },
+
+    toggleModal: (state, payload: PayloadAction<boolean>) => {
+      state.isModalOpen = payload.payload;
+    },
+
+    setItems: (state, payload: PayloadAction<GifResponse[]>) => {
+      state.gifList = payload.payload;
+    },
+
+    setSelectedGif: (state, payload: PayloadAction<string>) => {
+      state.selectedGif = payload.payload;
+    },
   },
 });
 
-export const { increaseCount } = customSlice.actions;
+export const { increaseCount, toggleModal, setSelectedGif, setItems } =
+  customSlice.actions;
 
 export default customSlice.reducer;
